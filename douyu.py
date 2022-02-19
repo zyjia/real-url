@@ -3,7 +3,7 @@
 import hashlib
 import re
 import time
-
+import sys, json
 import execjs
 import requests
 
@@ -49,6 +49,7 @@ class DouYu:
             'rid': self.rid,
             'did': self.did
         }
+        
         auth = DouYu.md5(self.rid + self.t13)
         headers = {
             'rid': self.rid,
@@ -129,9 +130,38 @@ class DouYu:
         real_url = {}
         real_url["flv"] = "http://dyscdnali1.douyucdn.cn/live/{}.flv?uuid=".format(key)
         real_url["x-p2p"] = "http://tx2play1.douyucdn.cn/live/{}.xs?uuid=".format(key)
+        room_name=s.get_room_info()
+        real_url["name"]=room_name
         return real_url
+    
+    #读取房间名称
+    def get_room_info(self):
+        url='https://www.douyu.com/betard/{}'.format(self.rid)
+        res=requests.get(url).json()
+        name='【'+res['room']['owner_name']+'】'+res['room']['room_name']
+        #print(name)
+        return name
+    
+
+ 
+ 
+  
+                  
 
 if __name__ == '__main__':
-    r = input('输入斗鱼直播间号：\n')
-    s = DouYu(r)
-    print(s.get_real_url())
+    try:
+        try:
+            r=sys.argv[1]
+        except:
+            r = input('输入斗鱼直播间号：\n')
+  
+        s = DouYu(r)
+        res=s.get_real_url()
+        print(res)
+    except Exception as e:
+        print(str(e)) 
+    
+      
+           
+    
+    
