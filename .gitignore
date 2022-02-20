@@ -123,5 +123,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-*.local.js
+*.local.*
 node_modules
