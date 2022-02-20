@@ -183,7 +183,7 @@ const fs = require('fs')
 
 const fetch = require('node-fetch')
 
-const fireFetch = async (url) => {
+const fireFetch = async (url, defaultRes = { room: {} }) => {
 
 
     try {
@@ -196,22 +196,40 @@ const fireFetch = async (url) => {
     }
 }
 
+//获取【一起看】的直播房间列表
+const getLiveRooms = async () => {
+    const cates = [290, 2827, 2828, 2829, 2930, 2831, 2832, 2833, 2834], rooms = []
+    for (const cateId of cates) {
+        console.log(`获取一起看分类 ${cateId} 的房间列表`);
+        const url = `http://capi.douyucdn.cn/api/v1/getThreeList?cate_id=${cateId}&offset=0&limit=50&client_sys=android`,
+            res = await fireFetch(url);
+        if (res.error === 0 && Array.isArray(res.data)) {
+            const list = res.data.map(({ nickname, room_id, room_name }) => ({ nickname, room_id, room_name }))
+            rooms.push(...list)
+        }
+
+    }
+    return rooms
+}
+
 (async () => {
-    const jsonList = []
-    for (let i = 0; i < DOUYU_ROOM_IDS.length; i++) {
+    const jsonList = [], rooms = await getLiveRooms()
+    for (let i = 0; i < rooms.length; i++) {
 
 
-        const key = DOUYU_ROOM_IDS[i]
+        const room = rooms[i], key = room.room_id;
         const stdout = exec(`python douyu.py ${key}`)
         const out = iconv.decode(stdout, 'cp936');
         console.log(out);
         if (out.includes('flv') && out.includes('x-p2p')) {
             const json = JSON.parse(out.replace(/\'/g, "\""))
 
-            const roomInfo = await fireFetch(`https://www.douyu.com/betard/${key}`)
+            const roomInfo = room.title ? room : await fireFetch(`https://www.douyu.com/betard/${key}`)
 
-            const name = '【' + roomInfo['room']['owner_name'] + '】' + roomInfo['room']['room_name']
-            console.log(name);
+            const name = room.title 
+                    ? `【${room.nickname}】${room.room_name}` 
+                    : '【' + roomInfo['room']['owner_name'] + '】' + roomInfo['room']['room_name']
+           // console.log(name);
             json.name = name || '未知名称'
             console.log('房间解析结果:', json);
             jsonList.push(json)

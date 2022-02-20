@@ -1,3 +1,12 @@
+# 自用自改
+
+- 使用`Node.js`动态获取分区房间列表: douyu、bilibili
+
+- 批量获取直播URL，添加房间名称、主播名称
+- 生成m3u文件
+- 修改部分`python`脚本
+- `Node.js`调用`python`脚本
+
 # Real-Url
 
 ## 说明

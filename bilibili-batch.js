@@ -31,8 +31,8 @@ const getYygRooms = async () => {
     let page = 1;
     const rooms = [];
     while (page < 10) {
-
-        const res = await fireFetch(genUrl(page))
+        console.log(`获取影音馆-分页 ${page} 的房间列表`);
+        const res = await fireFetch(genUrl(page), { data: { list: [] } })
         const { data, code } = res;
         if (code === 0) {
             const list = data.list || [];
