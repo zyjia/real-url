@@ -5,7 +5,7 @@
 # @Blog: https://wbt5.com
 
 import requests
-
+import sys
 
 class ZhiBotv:
 
@@ -59,5 +59,8 @@ def get_real_url(rid):
 
 
 if __name__ == '__main__':
-    r = input('请输入中国体育房间号：\n')
+    try:
+        r=sys.argv[1]
+    except:
+        r = input('请输入中国体育房间号：\n')
     print(get_real_url(r))

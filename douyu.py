@@ -3,11 +3,11 @@
 import hashlib
 import re
 import time
-import sys, json
+import sys
 import execjs
 import requests
-import re
-import emoji
+
+
 class DouYu:
     """
     可用来替换返回链接中的主机部分
@@ -134,22 +134,6 @@ class DouYu:
         real_url["name"]=room_name
         return real_url
     
-    #读取房间名称
-    def get_room_info(self):
-        url='https://www.douyu.com/betard/{}'.format(self.rid)
-        resp=requests.get(url).content().decode("utf8","ignore").encode("gbk","ignore")
-        res=resp.json()
-        name='【'+res['room']['owner_name']+'】'+res['room']['room_name']
-        #print(name)
-        return self.filter_emoji(name)
-    
-    def filter_emoji(self,content):
-        try:
-           text=emoji.demojize(content.dec)
-           
-        except re.error:
-            text=''
-        return  re.sub(':\S+?:', ' ', text)
 
   
                   
