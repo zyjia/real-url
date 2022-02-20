@@ -32,7 +32,6 @@ const getYygRooms = async () => {
     const rooms = [];
     while (page < 10) {
 
-
         const res = await fireFetch(genUrl(page))
         const { data, code } = res;
         if (code === 0) {
