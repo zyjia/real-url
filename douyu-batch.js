@@ -203,7 +203,7 @@ const fireFetch = async (url) => {
 
         const key = DOUYU_ROOM_IDS[i]
         const stdout = exec(`python douyu.py ${key}`)
-       const out = iconv.decode(stdout, 'cp936');
+        const out = iconv.decode(stdout, 'cp936');
         console.log(out);
         if (out.includes('flv') && out.includes('x-p2p')) {
             const json = JSON.parse(out.replace(/\'/g, "\""))
@@ -212,7 +212,7 @@ const fireFetch = async (url) => {
 
             const name = '【' + roomInfo['room']['owner_name'] + '】' + roomInfo['room']['room_name']
             console.log(name);
-            json.name = name
+            json.name = name || '未知名称'
             console.log('房间解析结果:', json);
             jsonList.push(json)
 
@@ -221,16 +221,16 @@ const fireFetch = async (url) => {
         }
 
     }
-    
+
     fs.writeFileSync(`./data/douyu.json`, JSON.stringify(jsonList))
     console.log('当前总数量', jsonList.length)
-    
-    
-    const m3u_list=['#EXTM3U']
+
+
+    const m3u_list = ['#EXTM3U']
     for (const i in jsonList) {
-        const obj=jsonList[i]
-        m3u_list.push(`#EXTINF:-1 group-title="斗鱼", ${obj.name}`,obj.flv)
+        const obj = jsonList[i]
+        m3u_list.push(`#EXTINF:-1 group-title="斗鱼", ${obj.name}`, obj.flv)
     }
-    
-    fs.writeFileSync(`./data/douyu.m3u`,m3u_list.join('\n'))
+
+    fs.writeFileSync(`./data/douyu.m3u`, m3u_list.join('\n'))
 })()
