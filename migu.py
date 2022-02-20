@@ -103,7 +103,7 @@ class MiGu:
 
 def get_real_url(rid):
     try:
-        mg = MiGu(rid)
+        mg = MiGu(rid,4)
         return mg.get_real_url()
     except Exception as e:
         print('Exception：', e)

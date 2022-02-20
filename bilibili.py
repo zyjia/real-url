@@ -4,7 +4,7 @@
 # qn=400蓝光
 # qn=10000原画
 import requests
-
+import sys
 
 class BiliBili:
 
@@ -45,6 +45,7 @@ class BiliBili:
             'ptype': 8,
         }
         res = self.s.get(url, headers=self.header, params=param).json()
+        
         stream_info = res['data']['playurl_info']['playurl']['stream']
         qn_max = 0
 
@@ -69,6 +70,7 @@ class BiliBili:
                     extra = info['extra']
                     stream_urls[f'线路{i + 1}'] = f'{host}{base_url}{extra}'
                 break
+        stream_urls['uid']=res['data']['uid']
         return stream_urls
 
 
@@ -82,5 +84,8 @@ def get_real_url(rid):
 
 
 if __name__ == '__main__':
-    r = input('请输入bilibili直播房间号：\n')
+    try:
+        r=sys.argv[1]
+    except:
+        r = input('请输入bilibili直播房间号：\n')
     print(get_real_url(r))

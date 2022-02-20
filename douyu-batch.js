@@ -202,7 +202,7 @@ const fireFetch = async (url) => {
 
 
         const key = DOUYU_ROOM_IDS[i]
-        const stdout = exec(`python douyu.py ${key}`).toString()
+        const stdout = exec(`python douyu.py ${key}`)
        const out = iconv.decode(stdout, 'cp936');
         console.log(out);
         if (out.includes('flv') && out.includes('x-p2p')) {
