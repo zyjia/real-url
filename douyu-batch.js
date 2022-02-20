@@ -176,34 +176,34 @@ const spawn = require('child_process').spawn
 const DOUYU_ROOM_IDS = [9249162, 218859, 5581257, 9275635, 6655271, 122402, 252802, 20415, 248753, 5033502, 5581257, 5423, 2793084, 1226741, 7882691, 562225, 6763930, 2436390, 4290711, 5522351, 5127679, 7412199, 4246519, 2935323, 310926, 2337939, 4332, 434971, 6566671, 85894, 2793084, 7494871, 8722254, 3637765, 223521, 7305938, 431460, 2436390, 7270927, 7116591, 6079455, 4360438, 454867, 1339207, 4549169, 9292503, 7701735, 6537888, 323876, 263824, 5423, 9611578, 9292499, 248753, 20415, 3637778, 252802, 96577, 3637726, 315457, 10011042, 6140589, 8986148, 2516864, 9650887, 8770422, 7356023, 413573, 36337, 8814650, 74374, 9826611, 315131, 5129261, 4282654, 1165374, 3928, 1504768, 9292492, 6763930, 9683979]
 
 const list = []
-var exec = require('child_process').exec;
+var exec = require('child_process').execSync;
 const iconv = require('iconv-lite');//解码包，解决中文乱码问题
 const fs = require('fs')
+for (let i = 0; i < DOUYU_ROOM_IDS.length; i++) {
 
-for (const i in DOUYU_ROOM_IDS) {
 
     const key = DOUYU_ROOM_IDS[i]
+    const stdout = exec(`python douyu.py ${key}`)
+    const out = iconv.decode(stdout, 'cp936');
+    console.log(out);
+    if (out.includes('flv') && out.includes('x-p2p')) {
+        const json = JSON.parse(out.replace(/\'/g, "\""))
+        console.log('房间解析结果:', json);
+        list.push(json)
 
-    exec('python douyu.py ' + key, { encoding: 'buffer' }, (error, stdout, stderr) => {
-        if (stdout.length > 1) {
-            var out = iconv.decode(stdout, 'cp936');
-            if (out.includes('flv')) {
-                const json = JSON.parse(out.replace(/\'/g, "\""))
-                console.log('you offer args:', json);
-                list.push(json)
-                
-            }
-        } else {
-            console.log('you dont offer args');
-        }
-        if (error) {
-            console.info('stderr : ' + stderr);
-        }
-        if (i + 1 >= DOUYU_ROOM_IDS.length) {
-            fs.writeFileSync(`./data/douyu.json`, JSON.stringify(list))
-        }
-    });
+    } else {
+        console.log('解析异常', out);
+    }
 
 }
+fs.writeFileSync(`./data/douyu.json`, JSON.stringify(list))
+console.log('当前总数量', list.length)
 
 
+const m3u_list=['#EXTM3U']
+for (const i in list) {
+    const obj=list[i]
+    m3u_list.push(`#EXTINF:-1 group-title="斗鱼", ${obj.name}`,obj.flv)
+}
+
+fs.writeFileSync(`./data/douyu.m3u`,m3u_list.join('\n'))
