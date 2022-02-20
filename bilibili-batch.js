@@ -12,7 +12,7 @@ const fs = require('fs')
 
 const fetch = require('node-fetch')
 
-const fireFetch = async (url) => {
+const fireFetch = async (url, defaultRes = { room: {} }) => {
 
 
     try {
@@ -21,25 +21,47 @@ const fireFetch = async (url) => {
         return res
     } catch (e) {
         console.error(e)
-        return { room: {} }
+        return defaultRes
     }
+}
+//获取影音馆的所有房间
+const getYygRooms = async () => {
+    const baseUrl = 'https://api.live.bilibili.com/xlive/web-interface/v1/second/getList',
+        genUrl = (p = 1) => `${baseUrl}?platform=web&parent_area_id=10&area_id=33&sort_type=online&page=${p}`
+    let page = 1;
+    const rooms = [];
+    while (page < 10) {
+
+
+        const res = await fireFetch(genUrl(page))
+        const { data, code } = res;
+        if (code === 0) {
+            const list = data.list || [];
+            const ids = list.map(({ roomid, title, uname, uid }) => ({ roomid, title, uname, uid }))
+            rooms.push(...ids)
+        }
+
+        page++;
+    }
+
+    return rooms;
 }
 
 (async () => {
-    const jsonList = []
-    for (let i = 0; i < BILI_ROOM_IDS.length; i++) {
+    const jsonList = [], rooms = await getYygRooms()//BILI_ROOM_IDS
+    for (let i = 0; i < rooms.length; i++) {
 
 
-        const key = BILI_ROOM_IDS[i]
+        const room = rooms[i], key = room.roomid
         const stdout = exec(`python bilibili.py ${key}`)
         const out = iconv.decode(stdout, 'cp936');
         console.log(out);
         if (out.includes('线路') && out.includes('uid')) {
             const json = JSON.parse(out.replace(/\'/g, "\""))
 
-            const user = await fireFetch(`https://api.bilibili.com/x/space/acc/info?mid=${json.uid}`)
+            const user = room.uname && room.title ? { ...room } : await fireFetch(`https://api.bilibili.com/x/space/acc/info?mid=${json.uid}`)
 
-            const uname = user.data?.name, rname = user?.data?.live_room?.title
+            const uname = room.uname || user.data?.name, rname = room.title || user?.data?.live_room?.title
 
             json.name = `【${uname}】${rname}` || '未知名称'
             console.log('房间解析结果:', json);
