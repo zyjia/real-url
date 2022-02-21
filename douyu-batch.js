@@ -50,7 +50,7 @@ const getLiveRooms = async () => {
     const jsonList = [], rooms = await getLiveRooms()
     for (let i = 0; i < rooms.length; i++) {
 
-
+        console.log(`正在解析${i + 1}第个房间, 共${rooms.length}个`);
         const room = rooms[i], key = room.room_id;
         const stdout = exec(`python douyu.py ${key}`)
         const out = iconv.decode(stdout, 'cp936');
@@ -60,10 +60,10 @@ const getLiveRooms = async () => {
 
             const roomInfo = room.title ? room : await fireFetch(`https://www.douyu.com/betard/${key}`)
 
-            const name = room.title 
-                    ? `【${room.nickname}】${room.room_name}` 
-                    : '【' + roomInfo['room']['owner_name'] + '】' + roomInfo['room']['room_name']
-           // console.log(name);
+            const name = room.title
+                ? `【${room.nickname}】${room.room_name}`
+                : '【' + roomInfo['room']['owner_name'] + '】' + roomInfo['room']['room_name']
+            // console.log(name);
             json.name = name || '未知名称'
             console.log('房间解析结果:', json);
             jsonList.push(json)

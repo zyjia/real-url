@@ -50,7 +50,7 @@ const getYygRooms = async () => {
     const jsonList = [], rooms = await getYygRooms()//BILI_ROOM_IDS
     for (let i = 0; i < rooms.length; i++) {
 
-
+        console.log(`正在解析${i + 1}第个房间, 共${rooms.length}个`);
         const room = rooms[i], key = room.roomid
         const stdout = exec(`python bilibili.py ${key}`)
         const out = iconv.decode(stdout, 'cp936');
