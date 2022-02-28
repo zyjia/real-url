@@ -144,7 +144,7 @@ if __name__ == '__main__':
             r=sys.argv[1]
         except:
             r = input('输入斗鱼直播间号：\n')
-  
+
         s = DouYu(r)
         res=s.get_real_url()
         print(res)

@@ -54,10 +54,11 @@ const getLiveRooms = async () => {
         const room = rooms[i], key = room.room_id;
         const stdout = exec(`python douyu.py ${key}`)
         const out = iconv.decode(stdout, 'cp936');
-        console.log(out);
+    
+       console.log(out,' python output');
         if (out.includes('flv') && out.includes('x-p2p')) {
             const json = JSON.parse(out.replace(/\'/g, "\""))
-
+       
             const roomInfo = room.title ? room : await fireFetch(`https://www.douyu.com/betard/${key}`)
 
             const name = room.title
@@ -74,7 +75,7 @@ const getLiveRooms = async () => {
 
     }
 
-    fs.writeFileSync(`./data/douyu.json`, JSON.stringify(jsonList))
+ /*     fs.writeFileSync(`./data/douyu.json`, JSON.stringify(jsonList))
     console.log('当前总数量', jsonList.length)
 
 
@@ -84,5 +85,5 @@ const getLiveRooms = async () => {
         m3u_list.push(`#EXTINF:-1 group-title="斗鱼", ${obj.name}`, obj.flv)
     }
 
-    fs.writeFileSync(`./data/douyu.m3u`, m3u_list.join('\n'))
+    fs.writeFileSync(`./data/douyu.m3u`, m3u_list.join('\n')) */ 
 })()
