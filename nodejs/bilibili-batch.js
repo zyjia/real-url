@@ -52,7 +52,7 @@ const getYygRooms = async () => {
 
         console.log(`正在解析${i + 1}第个房间, 共${rooms.length}个`);
         const room = rooms[i], key = room.roomid
-        const stdout = exec(`python bilibili.py ${key}`)
+        const stdout = exec(`python ../bilibili.py ${key}`)
         const out = iconv.decode(stdout, 'cp936');
         console.log(out);
         if (out.includes('线路') && out.includes('uid')) {
@@ -72,7 +72,7 @@ const getYygRooms = async () => {
 
     }
 
-    fs.writeFileSync(`./data/bilibili.json`, JSON.stringify(jsonList))
+    fs.writeFileSync(`../data/bilibili.json`, JSON.stringify(jsonList))
     console.log('当前总数量', jsonList.length)
 
 
@@ -84,5 +84,5 @@ const getYygRooms = async () => {
         }
     }
 
-    fs.writeFileSync(`./data/bilibili.m3u`, m3u_list.join('\n'))
+    fs.writeFileSync(`../data/bilibili.m3u`, m3u_list.join('\n'))
 })()

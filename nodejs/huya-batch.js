@@ -48,7 +48,7 @@ const getYqkRooms = async () => {
         console.log(`正在解析${i + 1}第个房间, 共${rooms.length}个`);
 
         const room = rooms[i], key = room.roomid
-        const stdout = exec(`python huya.py ${key}`)
+        const stdout = exec(`python ../huya.py ${key}`)
         const out = iconv.decode(stdout, 'cp936');
         console.log(out);
         if (out.includes('url') && out.includes('name')) {
@@ -63,7 +63,7 @@ const getYqkRooms = async () => {
 
     }
 
-    fs.writeFileSync(`./data/huya.json`, JSON.stringify(jsonList))
+    fs.writeFileSync(`../data/huya.json`, JSON.stringify(jsonList))
     console.log('当前总数量', jsonList.length)
 
 
@@ -75,5 +75,5 @@ const getYqkRooms = async () => {
         }
     }
 
-    fs.writeFileSync(`./data/huya.m3u`, m3u_list.join('\n'))
+    fs.writeFileSync(`../data/huya.m3u`, m3u_list.join('\n'))
 })()
