@@ -53,7 +53,7 @@ def get_real_url(room_id):
     urls={}
     liveData=data['data']['liveData']
     
-    urls['name']=liveData['nick']+'-'+liveData['introduction']
+    urls['name']=liveData['nick']+'-'+liveData['introduction'].replace('"','')
     for i in   range(len(multiLine)):
         obj=multiLine[i]
 

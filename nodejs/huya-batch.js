@@ -50,7 +50,7 @@ const getYqkRooms = async () => {
         const room = rooms[i], key = room.roomid
         const stdout = exec(`python ../huya.py ${key}`)
         const out = iconv.decode(stdout, 'cp936');
-        console.log(out);
+        console.log(out,'python out');
         if (out.includes('url') && out.includes('name')) {
             const json = JSON.parse(out.replace(/\'/g, "\""))
             json.name = room.nick ? `【${room.nick}】${room.introduction}` : json.name || '未知名称'
