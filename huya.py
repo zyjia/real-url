@@ -34,7 +34,7 @@ def live(e):
     ms = hashlib.md5(ll.encode("utf-8")).hexdigest()
     h = '_'.join([p, t, s, ms, l])
     m = hashlib.md5(h.encode('utf-8')).hexdigest()
-    urls = "{}?wsSecret={}&wsTime={}&seqid={}&ctype={}&ver=1&txyp={}&fs={}&&sphdcdn={}&sphdDC={}&sphd={}&t=103&ratio=0&u={}&t=103&sv=2110211124".format(i, m, l, mm, ml, mt, fs, sp, spp, spd, t)
+    urls = "{}?wsSecret={}&wsTime={}&seqid={}&ctype={}&ver=1&txyp={}&fs={}&&sphdcdn={}&sphdDC={}&sphd={}&t=103&ratio=2000&u={}&t=103&sv=2110211124".format(i, m, l, mm, ml, mt, fs, sp, spp, spd, t)
     aa, ab = urls.split('//')
     url = 'https://'+ab
     return url
