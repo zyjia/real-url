@@ -52,12 +52,13 @@ const getLiveRooms = async () => {
 
         console.log(`正在解析${i + 1}第个房间, 共${rooms.length}个`);
         const room = rooms[i], key = room.room_id;
-       // const stdout = exec(`python ../douyu.py ${key}`)
-        const out ='flv,x-p2p'// iconv.decode(stdout, 'cp936');
+       const stdout = exec(`python ../douyu.py ${key}`)
+        const out = iconv.decode(stdout, 'cp936');
 
        console.log(out,' python output');
         if (out.includes('flv') && out.includes('x-p2p')) {
-            const json ={flv:`http://zzy789.xyz/douyu1.php?id=${key}`}// JSON.parse(out.replace(/\'/g, "\""))
+            //`http://zzy789.xyz/douyu1.php?id=${key}`
+            const json = JSON.parse(out.replace(/\'/g, "\""))
 
             const roomInfo = room.title ? room : await fireFetch(`https://www.douyu.com/betard/${key}`)
 
@@ -82,7 +83,7 @@ const getLiveRooms = async () => {
     const m3u_list = ['#EXTM3U']
     for (const i in jsonList) {
         const obj = jsonList[i]
-        m3u_list.push(`#EXTINF:-1 group-title="斗鱼", ${obj.name}`, obj.flv)
+        m3u_list.push(`#EXTINF:-1 group-title="斗鱼", ${obj.name}`, obj['x-p2p'])
     }
 
     fs.writeFileSync(`../data/douyu.m3u`, m3u_list.join('\n'))

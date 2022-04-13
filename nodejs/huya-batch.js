@@ -50,7 +50,7 @@ const getYqkRooms = async () => {
         const room = rooms[i], key = room.roomid
         const stdout = exec(`python ../huya.py ${key}`)
         const out = iconv.decode(stdout, 'cp936');
-        console.log(out,'python out');
+        console.log(out, 'python out');
         if (out.includes('url') && out.includes('name')) {
             const json = JSON.parse(out.replace(/\'/g, "\""))
             json.name = room.nick ? `【${room.nick}】${room.introduction}` : json.name || '未知名称'
@@ -69,7 +69,7 @@ const getYqkRooms = async () => {
 
     const m3u_list = ['#EXTM3U']
     for (const i in jsonList) {
-        const obj = jsonList[i], url = obj['url1'] || obj['url2']
+        const obj = jsonList[i], url = obj['url2'] || obj['url1']
         if (url) {
             m3u_list.push(`#EXTINF:-1 group-title="虎牙", ${obj.name}`, url)
         }
