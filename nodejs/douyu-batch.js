@@ -52,10 +52,10 @@ const getLiveRooms = async () => {
 
         console.log(`正在解析${i + 1}第个房间, 共${rooms.length}个`);
         const room = rooms[i], key = room.room_id;
-       const stdout = exec(`python ../douyu.py ${key}`)
+        const stdout = exec(`python ../douyu.py ${key}`)
         const out = iconv.decode(stdout, 'cp936');
-
-       console.log(out,' python output');
+        // const out = 'flv x-p2p'
+        console.log(out, ' python output');
         if (out.includes('flv') && out.includes('x-p2p')) {
             //`http://zzy789.xyz/douyu1.php?id=${key}`
             const json = JSON.parse(out.replace(/\'/g, "\""))
@@ -76,14 +76,15 @@ const getLiveRooms = async () => {
 
     }
 
-      fs.writeFileSync(`../data/douyu.json`, JSON.stringify(jsonList))
+    fs.writeFileSync(`../data/douyu.json`, JSON.stringify(jsonList))
     console.log('当前总数量', jsonList.length)
 
 
     const m3u_list = ['#EXTM3U']
     for (const i in jsonList) {
-        const obj = jsonList[i]
-        m3u_list.push(`#EXTINF:-1 group-title="斗鱼", ${obj.name}`, obj['x-p2p'])
+        const obj = jsonList[i],
+         url = obj['flv'].replace('dyscdnali1.douyucdn.cn', 'vplay1a.douyucdn.cn') || obj['x-p2p']
+        m3u_list.push(`#EXTINF:-1 group-title="斗鱼", ${obj.name}`, url)
     }
 
     fs.writeFileSync(`../data/douyu.m3u`, m3u_list.join('\n'))
