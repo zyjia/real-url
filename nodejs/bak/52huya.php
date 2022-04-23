@@ -1,5 +1,5 @@
 <?php
-$url = 'https://m.huya.com/913155';
+$url = 'https://m.huya.com/cxldb';
 $header[] = 'User-Agent: Mozilla/5.0 (Linux; U; Android 4.0.3; zh-CN; vivo X9i Build/N2G47H) AppleWebKit/537.36 (KHTML,like Gecko) Version/4.0 Chrome/40.0.2214.89 UCBrowser/11.9.3.973 Mobile Safari/537.36';
 $header[] = 'CLIENT-IP: '.get_ip();
 $header[] = 'X-FORWARDED-FOR: '.get_ip();
@@ -12,7 +12,7 @@ $liveurl = inter($data,'"liveLineUrl":"','","isFace');
 $baseurl = base64_decode($liveurl);
 //echo $baseurl."<br>";
 
-$uid="1461688433250";
+$uid="1463962478092";
 
 $_seqid = $uid + getMillisecond();
 

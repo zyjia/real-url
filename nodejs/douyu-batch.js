@@ -83,7 +83,7 @@ const getLiveRooms = async () => {
     const m3u_list = ['#EXTM3U']
     for (const i in jsonList) {
         const obj = jsonList[i],
-         url = obj['flv'].replace('dyscdnali1.douyucdn.cn', 'vplay1a.douyucdn.cn') || obj['x-p2p']
+         url = obj['flv'] || obj['x-p2p']
         m3u_list.push(`#EXTINF:-1 group-title="斗鱼", ${obj.name}`, url)
     }
 
