@@ -55,7 +55,7 @@ def get_real_url(room_id):
     }
     data = requests.get(url=room_url, headers=header).json()
     
-    multiLine=data['data']['stream']['flv']['multiLine']
+    multiLine=data['data']['stream']['hls']['multiLine']
     #print(multiLine)
     urls={}
     liveData=data['data']['liveData']

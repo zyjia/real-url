@@ -2,6 +2,7 @@
 var exec = require("child_process").execSync;
 const iconv = require("iconv-lite"); //解码包，解决中文乱码问题
 const fs = require("fs");
+const {getHuyaLiveInfo} = require("./huya-parser");
 
 const fetch = require("node-fetch");
 
@@ -55,15 +56,16 @@ const getYqkRooms = async () => {
     const room = rooms[i],
       key = room.roomid;
     console.log(`正在解析${i + 1}第个房间,ID: ${key}, 共${rooms.length}个`);
-    const stdout = exec(`python ../huya.py ${key}`);
+ /*    const stdout = exec(`python ../huya.py ${key}`);
     let out = "";
     try {
       out = iconv.decode(stdout, "cp936");
     } catch {}
 
-    console.log(out, "python out");
+    console.log(out, "python out"); */
+    const out='raw url name'
     if (out.includes("url") && out.includes("name")) {
-      const json = JSON.parse(out.replace(/\'/g, '"'));
+      const json =await getHuyaLiveInfo(key); //JSON.parse(out.replace(/\'/g, '"'));
       json.name = room.nick
         ? `【${room.nick}】${room.introduction}`
         : json.name || "未知名称";
@@ -80,7 +82,7 @@ const getYqkRooms = async () => {
   const m3u_list = ["#EXTM3U"];
   for (const i in jsonList) {
     const obj = jsonList[i],
-      url = obj["url1"] || obj["url2"];
+      url = obj["url1"] || obj["url2"]|| obj["url"];
     if (url) {
       m3u_list.push(`#EXTINF:-1 group-title="虎牙", ${obj.name}`, url);
     }
