@@ -184,7 +184,7 @@ const getHuyaLiveInfo = async (roomId) => {
   // console.log(info);
   return { url: await getHuyaRealUrl(roomId, rawUrl), name };
 };
-getHuyaLiveInfo("11342400").then((url) => {
+/* getHuyaLiveInfo("11336726").then((url) => {
   console.log(url);
-});
+}); */
 module.exports = { getHuyaLiveInfo };
