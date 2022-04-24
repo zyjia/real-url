@@ -6,13 +6,19 @@ const fetch = require("node-fetch");
 const { createHash } = require("crypto");
 const fs = require("fs");
 const { hostname } = require("os");
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //不含最大值，含最小值
+}
 const CONFIG = {
   headers: {
     "User-Agent":
       "Mozilla/5.0 (Linux; U; Android 4.0.3; zh-CN; vivo X9i Build/N2G47H) AppleWebKit/537.36 (KHTML,like Gecko) Version/4.0 Chrome/40.0.2214.89 UCBrowser/11.9.3.973 Mobile Safari/537.36",
   },
   M_HOST: "https://m.huya.com",
-  UID: "1463962478092", //可能随时变化
+  UIDa: "1463962478092", 
+  UID: getRandomInt(1460000000000,1760000000000)+''
 };
 
 const fireFetch = async (url, opts = {}, isJson = false) => {
@@ -127,7 +133,7 @@ const extractLiveLineUrl = async (roomId, all = false) => {
 };
 
 //解析
-const getHuyaRealUrl = async (roomId, rawUrl = "") => {
+const getHuyaRealUrl = async (roomId, rawUrl = "",type='flv') => {
   const liveUrl = rawUrl || (await extractLiveLineUrl(roomId));
   if (!liveUrl) {
     return "";
@@ -137,10 +143,10 @@ const getHuyaRealUrl = async (roomId, rawUrl = "") => {
   const uuid = Number(
       ((Date.now() % 1e10) * 1e3 + ((1e3 * Math.random()) | 0)) % 4294967295
     ),
-    seqid = parseInt(CONFIG.UID) + Date.now();
+    seqid = parseInt(CONFIG.UID) + Date.now()*1e4;
   const s = encrypt("md5", `${seqid}|${query.ctype}|${query.t}`),
     pathname = liveUrl.split("?").shift().split("/").pop(),
-    _sStreamName = pathname.replace(".m3u8", ""),
+    _sStreamName = pathname.replace("."+type, ""),
     _fm = atob(query.fm),
     n = _fm
       .replace("$0", CONFIG.UID)
@@ -160,23 +166,22 @@ const getHuyaRealUrl = async (roomId, rawUrl = "") => {
       uuid,
       uid: CONFIG.UID,
       ver: 1,
-      sv: 2110211124,
+      sv: 2110211124,radio:2000
     };
   // console.log(query);
-  const hostname = `http://${host.replace("flv", "hls")}`;
-  return `${hostname}/src/${_sStreamName}.m3u8${genUrlSearch(searchObj)}`;
+  const hostname = `http://${host}`;
+  return `${hostname}/src/${_sStreamName}.${type}${genUrlSearch(searchObj)}`;
 };
 
 //获取url和名称
 const getHuyaLiveInfo = async (roomId) => {
   const info = await extractLiveLineUrl(roomId, true),
     //rawUrl = atob(info?.roomProfile?.liveLineUrl),
-
-    multiLine = info?.stream?.hls.multiLine || [],
+ 
+    multiLine = info?.stream?.flv.multiLine || [],
     rawUrl = multiLine
       .map((item) => item.url)
-      .filter(Boolean)
-      .pop(),
+      .shift(),
     roomLiveInfo = info?.roomInfo?.tLiveInfo || info?.liveData || {},
     name = `【${roomLiveInfo.sNick || roomLiveInfo.nick}】${
       roomLiveInfo.sRoomName || roomLiveInfo.roomName
@@ -184,7 +189,7 @@ const getHuyaLiveInfo = async (roomId) => {
   // console.log(info);
   return { url: await getHuyaRealUrl(roomId, rawUrl), name };
 };
-/* getHuyaLiveInfo("11336726").then((url) => {
+/*   getHuyaLiveInfo("11352944").then((url) => {
   console.log(url);
-}); */
+});   */
 module.exports = { getHuyaLiveInfo };
