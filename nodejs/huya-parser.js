@@ -18,7 +18,7 @@ const CONFIG = {
   },
   M_HOST: "https://m.huya.com",
   UIDa: "1463962478092", 
-  UID: getRandomInt(1460000000000,1760000000000)+''
+  UID: getRandomInt(1460000000000,1660000000000)+''
 };
 
 const fireFetch = async (url, opts = {}, isJson = false) => {
@@ -163,10 +163,11 @@ const getHuyaRealUrl = async (roomId, rawUrl = "",type='flv') => {
       ...rest,
       wsSecret,
       seqid,
-      uuid,
-      uid: CONFIG.UID,
+     // uuid,
+      u: CONFIG.UID,
       ver: 1,
-      sv: 2110211124,radio:2000
+      sv: 2110211124,
+      radio:'0'
     };
   // console.log(query);
   const hostname = `http://${host}`;
@@ -189,7 +190,7 @@ const getHuyaLiveInfo = async (roomId) => {
   // console.log(info);
   return { url: await getHuyaRealUrl(roomId, rawUrl), name };
 };
-/*   getHuyaLiveInfo("11352944").then((url) => {
+   getHuyaLiveInfo("11352944").then((url) => {
   console.log(url);
-});   */
+});   
 module.exports = { getHuyaLiveInfo };
