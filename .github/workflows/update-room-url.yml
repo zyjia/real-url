@@ -42,7 +42,7 @@ jobs:
           registry-url: https://registry.npmjs.org
           #cache: 'npm'
           
-      - name: install python packages
+      - name: setup and install python packages
         run: |
           pip install requests PyExecJS
 
@@ -61,12 +61,6 @@ jobs:
         #run: node douyu-batch.js
         run: echo dy
       
-      - name: push
-        run: |
-          git commit -am"update"
-          git push origin master
-
-          
       - name: Pushes to Repository
         uses: tech-thinker/push-to-repo@main
         env:
