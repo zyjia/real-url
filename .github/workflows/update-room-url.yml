@@ -39,6 +39,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+          registry-url: https://registry.npmjs.org
           #cache: 'npm'
           
       - name: install python packages
@@ -57,10 +58,12 @@ jobs:
           
       - name: update douyu
         working-directory: ./nodejs
-        run: node douyu-batch.js
+        #run: node douyu-batch.js
+        run: dy
 
           
       - name: update huya
         working-directory: ./nodejs
-        run: node huya-batch.js
+        run: echo hy
+        #run: node huya-batch.js
 
