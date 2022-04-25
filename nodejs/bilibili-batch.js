@@ -1,3 +1,4 @@
+
 //批量
 
 //const arr=raw.split('\n').filter(v=>!v.includes('#EXTINF')).map(v=>+v.replace('id=','')).filter(Boolean)
