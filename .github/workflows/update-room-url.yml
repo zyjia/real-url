@@ -7,8 +7,8 @@ on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  schedule:
+    - cron: '* */24 * * *'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -29,7 +29,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      
+        
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v3
         with:
@@ -43,10 +43,10 @@ jobs:
           
       # Runs a single command using the runners shell
       - name: go nodej dir
-        run: cd nodejs
-        
-      - run: npm i yarn -g
-      - run: yarn
+        working-directory: ./nodejs
+        run: |
+          npm i yarn -g
+          yarn
 
       - name: update bilibili
         run: node bilibili-batch.js
