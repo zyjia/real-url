@@ -32,7 +32,8 @@ const fireFetch = async (url, defaultRes = { room: {} }) => {
 
 //获取【一起看】的直播房间列表
 const getLiveRooms = async () => {
-    const cates = [290, 2827, 2828, 2829, 2930, 2831, 2832, 2833, 2834], rooms = []
+   // const cates = [290], rooms = [];
+   const cates = [290, 2827, 2828, 2829, 2930, 2831, 2832, 2833, 2834], rooms = [];
     for (const cateId of cates) {
         console.log(`获取一起看分类 ${cateId} 的房间列表`);
         const url = `http://capi.douyucdn.cn/api/v1/getThreeList?cate_id=${cateId}&offset=0&limit=50&client_sys=android`,
@@ -50,8 +51,9 @@ const getLiveRooms = async () => {
     const jsonList = [], rooms = await getLiveRooms()
     for (let i = 0; i < rooms.length; i++) {
 
-        console.log(`正在解析${i + 1}第个房间, 共${rooms.length}个`);
         const room = rooms[i], key = room.room_id;
+        
+        console.log(`正在解析${i + 1}第个房间, ID: ${key}, 共${rooms.length}个`);
         const stdout = exec(`python ../douyu.py ${key}`)
         const out = iconv.decode(stdout, 'cp936');
         // const out = 'flv x-p2p'

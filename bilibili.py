@@ -68,7 +68,7 @@ class BiliBili:
                 for i, info in enumerate(url_info):
                     host = info['host']
                     extra = info['extra']
-                    stream_urls[f'线路{i + 1}'] = f'{host}{base_url}{extra}'
+                    stream_urls[f'url{i + 1}'] = f'{host}{base_url}{extra}'
                 break
         stream_urls['uid']=res['data']['uid']
         return stream_urls

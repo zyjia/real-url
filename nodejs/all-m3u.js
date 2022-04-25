@@ -8,5 +8,6 @@ const biliM3u = fs.readFileSync(path.join(__dirname,'../data/bilibili.m3u')).toS
 const huyaM3u = fs.readFileSync(path.join(__dirname,'../data/huya.m3u')).toString()
 const allM3u = douyuM3u + biliM3u.replace('#EXTM3U', '') + huyaM3u.replace('#EXTM3U', '')
 const date = new Date();
-fs.writeFileSync(path.join(__dirname,`../data/bl-dy-hy-${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}.m3u`), allM3u)
+//fs.writeFileSync(path.join(__dirname,`../data/bl-dy-hy-${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}.m3u`), allM3u)
+fs.writeFileSync(path.join(__dirname,`../data/all.m3u`), allM3u)
 

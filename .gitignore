@@ -125,3 +125,5 @@ dmypy.json
 
 *.local.*
 node_modules
+
+.vscode
