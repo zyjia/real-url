@@ -17,8 +17,7 @@ const CONFIG = {
       "Mozilla/5.0 (Linux; U; Android 4.0.3; zh-CN; vivo X9i Build/N2G47H) AppleWebKit/537.36 (KHTML,like Gecko) Version/4.0 Chrome/40.0.2214.89 UCBrowser/11.9.3.973 Mobile Safari/537.36",
   },
   M_HOST: "https://m.huya.com",
-  UIDa: "1463962478092", 
-  UID: getRandomInt(1460000000000,1760000000000)+''
+  UID: "1463962478092",
 };
 
 const fireFetch = async (url, opts = {}, isJson = false) => {
@@ -133,7 +132,7 @@ const extractLiveLineUrl = async (roomId, all = false) => {
 };
 
 //解析
-const getHuyaRealUrl = async (roomId, rawUrl = "",type='flv') => {
+const getHuyaRealUrl = async (roomId, rawUrl = "", type = "flv") => {
   const liveUrl = rawUrl || (await extractLiveLineUrl(roomId));
   if (!liveUrl) {
     return "";
@@ -143,13 +142,14 @@ const getHuyaRealUrl = async (roomId, rawUrl = "",type='flv') => {
   const uuid = Number(
       ((Date.now() % 1e10) * 1e3 + ((1e3 * Math.random()) | 0)) % 4294967295
     ),
-    seqid = parseInt(CONFIG.UID) + Date.now()*1e4;
+    uid = getRandomInt(1460000000000, 1650000000000),
+    seqid = parseInt(uid) + Date.now() * 1e4;
   const s = encrypt("md5", `${seqid}|${query.ctype}|${query.t}`),
     pathname = liveUrl.split("?").shift().split("/").pop(),
-    _sStreamName = pathname.replace("."+type, ""),
+    _sStreamName = pathname.replace("." + type, ""),
     _fm = atob(query.fm),
     n = _fm
-      .replace("$0", CONFIG.UID)
+      .replace("$0", uid + "")
       .replace("$1", _sStreamName)
       .replace("$2", s)
       .replace("$3", query.wsTime),
@@ -166,7 +166,8 @@ const getHuyaRealUrl = async (roomId, rawUrl = "",type='flv') => {
       uuid,
       uid: CONFIG.UID,
       ver: 1,
-      sv: 2110211124,radio:2000
+      sv: 2110211124,
+      radio: 2000,
     };
   // console.log(query);
   const hostname = `http://${host}`;
@@ -177,11 +178,9 @@ const getHuyaRealUrl = async (roomId, rawUrl = "",type='flv') => {
 const getHuyaLiveInfo = async (roomId) => {
   const info = await extractLiveLineUrl(roomId, true),
     //rawUrl = atob(info?.roomProfile?.liveLineUrl),
- 
+
     multiLine = info?.stream?.flv.multiLine || [],
-    rawUrl = multiLine
-      .map((item) => item.url)
-      .shift(),
+    rawUrl = multiLine.map((item) => item.url).shift(),
     roomLiveInfo = info?.roomInfo?.tLiveInfo || info?.liveData || {},
     name = `【${roomLiveInfo.sNick || roomLiveInfo.nick}】${
       roomLiveInfo.sRoomName || roomLiveInfo.roomName
