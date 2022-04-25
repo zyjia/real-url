@@ -79,7 +79,7 @@ const getHuyaRealUrl = async (roomId, rawUrl = "", type = "flv") => {
       wsSecret,
       seqid,
       uuid,
-      uid: CONFIG.UID,
+      uid,
       ver: 1,
       sv: 2110211124,
       radio: 2000,
