@@ -43,9 +43,10 @@ jobs:
           
       # Runs a single command using the runners shell
       - name: go nodej dir
-      - run: cd nodejs
+        run: cd nodejs
+        
       - run: npm ci
 
       - name: update bilibili
-      - run: node bilibili-batch.js
+        run: node bilibili-batch.js
 
