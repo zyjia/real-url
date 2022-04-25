@@ -30,7 +30,7 @@ const getYygRooms = async () => {
         genUrl = (p = 1) => `${baseUrl}?platform=web&parent_area_id=10&area_id=33&sort_type=online&page=${p}`
     let page = 1;
     const rooms = [];
-    while (page < 2) {
+    while (page < 15) {
         console.log(`获取影音馆-分页 ${page} 的房间列表`);
         const res = await fireFetch(genUrl(page), { data: { list: [] } })
         const { data, code } = res;

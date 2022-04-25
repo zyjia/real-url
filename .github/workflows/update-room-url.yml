@@ -58,8 +58,13 @@ jobs:
           
       - name: update douyu
         working-directory: ./nodejs
-        #run: node douyu-batch.js
-        run: echo dy
+        run: node douyu-batch.js
+        run: echo douyu done
+          
+      - name: update huya
+        working-directory: ./nodejs
+        run: node huya-batch.js
+        run: echo huya done
       
       - name: Pushes to My Repository
         uses: tech-thinker/push-to-repo@main
