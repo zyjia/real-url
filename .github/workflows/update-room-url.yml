@@ -45,7 +45,8 @@ jobs:
       - name: go nodej dir
         run: cd nodejs
         
-      - run: npm ci
+      - run: npm i yarn -g
+      - yarn
 
       - name: update bilibili
         run: node bilibili-batch.js
