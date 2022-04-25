@@ -67,8 +67,15 @@ jobs:
           git push origin master
 
           
-      - name: update huya
-        working-directory: ./nodejs
-        run: echo hy
-        #run: node huya-batch.js
+      - name: Pushes to Repository
+        uses: tech-thinker/push-to-repo@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.GIT_PAT_TOKEN }}
+        with:
+          user-name: "github-actions[bot]"
+          user-email: github-actions[bot]@users.noreply.github.com
+          source-directory: "./data"
+          destination-github-username: "moxun33"
+          destination-repository-name: "real-url"
+          target-branch: master
 
