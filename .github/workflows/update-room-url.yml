@@ -59,7 +59,7 @@ jobs:
       - name: update douyu
         working-directory: ./nodejs
         #run: node douyu-batch.js
-        run: dy
+        run: echo dy
 
           
       - name: update huya
