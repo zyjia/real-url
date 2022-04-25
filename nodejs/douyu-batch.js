@@ -50,8 +50,9 @@ const getLiveRooms = async () => {
     const jsonList = [], rooms = await getLiveRooms()
     for (let i = 0; i < rooms.length; i++) {
 
-        console.log(`正在解析${i + 1}第个房间, 共${rooms.length}个`);
         const room = rooms[i], key = room.room_id;
+        
+        console.log(`正在解析${i + 1}第个房间, ID: ${key}, 共${rooms.length}个`);
         const stdout = exec(`python ../douyu.py ${key}`)
         const out = iconv.decode(stdout, 'cp936');
         // const out = 'flv x-p2p'
