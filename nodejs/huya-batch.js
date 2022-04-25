@@ -21,7 +21,8 @@ const fireFetch = async (url, defaultRes = {}, isJson = false) => {
 //指定子分区
 //获取第一页，可自行更改
 const getYqkRooms = async () => {
-  const tmpIds = [4201, 4183, 2067, 4061, 2079];
+  const tmpIds = [4201];
+  //const tmpIds = [4201, 4183, 2067, 4061, 2079];
   const genUrl = (tmpId) =>
     `https://live.cdn.huya.com/livelist/game/tagLivelist?gameId=2135&tmpId=${tmpId}&callback=getLiveListJsonpCallback&page=1`;
   const rooms = [];
