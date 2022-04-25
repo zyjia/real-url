@@ -55,7 +55,7 @@ const getYygRooms = async () => {
         const stdout = exec(`python ../bilibili.py ${key}`)
         const out = iconv.decode(stdout, 'cp936');
         console.log(out);
-        if (out.includes('线路') && out.includes('uid')) {
+        if (out.includes('url') && out.includes('uid')) {
             const json = JSON.parse(out.replace(/\'/g, "\""))
 
             const user = room.uname && room.title ? { ...room } : await fireFetch(`https://api.bilibili.com/x/space/acc/info?mid=${json.uid}`)
