@@ -61,7 +61,7 @@ jobs:
         #run: node douyu-batch.js
         run: echo dy
       
-      - name: Pushes to Repository
+      - name: Pushes to My Repository
         uses: tech-thinker/push-to-repo@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.GIT_PAT_TOKEN }}
