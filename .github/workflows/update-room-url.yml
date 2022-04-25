@@ -71,5 +71,5 @@ jobs:
           source-directory: "./"
           destination-github-username: "moxun33"
           destination-repository-name: "real-url"
-          target-branch: master
+          target-branch: main
 
