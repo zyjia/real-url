@@ -60,6 +60,11 @@ jobs:
         working-directory: ./nodejs
         #run: node douyu-batch.js
         run: echo dy
+      
+      - name: push
+        run: |
+          git commit -am"update"
+          git push origin master
 
           
       - name: update huya
