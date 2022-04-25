@@ -42,12 +42,16 @@ jobs:
           cache: 'npm'
           
       # Runs a single command using the runners shell
-      - name: go nodej dir
+      - name: install dependences
         working-directory: ./nodejs
         run: |
           npm i yarn -g
           yarn
 
       - name: update bilibili
-        run: node bilibili-batch.js
+        working-directory: ./nodejs
+        run: |
+          node bilibili-batch.js
+          node douyu-batch.js
+          node huya-batch.js
 
