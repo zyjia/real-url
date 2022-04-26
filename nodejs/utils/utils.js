@@ -1,7 +1,7 @@
 const {createHash} = require("crypto");
 const fetch = require("node-fetch");
-/*const HttpsProxyAgent = require('https-proxy-agent');
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';*/
+const HttpsProxyAgent = require('https-proxy-agent');
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const COMM_CONF = {
     PROXY_URL: 'http://127.0.0.1:18888',
@@ -16,7 +16,7 @@ const fireFetch = async (url, opts = {}, isJson = false) => {
 
         const heads = opts.headers || {};
         const res = await fetch(url, {
-          //  agent: HttpsProxyAgent(COMM_CONF.PROXY_URL),
+            agent: HttpsProxyAgent(COMM_CONF.PROXY_URL),
             ...opts, mode: "same-origin",
             credentials: "same-origin",
             headers: {
