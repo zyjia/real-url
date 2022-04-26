@@ -6,8 +6,6 @@ const {
 const fs = require('fs')
 const {VM, VMScript} = require('vm2');
 
-//var exec = require('child_process').execSync;
-//const iconv = require('iconv-lite');//解码包，解决中文乱码问题
 /***
  *
  * 解析斗鱼 url
@@ -75,7 +73,7 @@ async function getRoomPreviewInfo(rid) {
 async function getUrlKey(initInfo) {
     try {
 
-       const query=initInfo.query
+        const query = initInfo.query
         // console.log(query)
         const url = 'https://m.douyu.com/api/room/ratestream'
         const res = await fireFetch(`${url}?${query}`, {
@@ -157,27 +155,20 @@ const getLiveRooms = async () => {
         const room = rooms[i], key = room.room_id;
 
         console.log(`正在解析${i + 1}第个房间, ID: ${key}, 共${rooms.length}个`);
-        // const stdout = exec(`python ../douyu.py ${key}`)
-        // const out = iconv.decode(stdout, 'cp936');
-        const out = 'flv x-p2p'
-        // console.log(out, ' python output');
-        if (out.includes('flv') && out.includes('x-p2p')) {
-            //`http://zzy789.xyz/douyu1.php?id=${key}`
-            const json = await getRoomLiveUrls(key)// JSON.parse(out.replace(/\'/g, "\""))
 
-            const roomInfo = room.title ? room : await fireFetch(`https://www.douyu.com/betard/${key}`, {}, true)
+        //`http://zzy789.xyz/douyu1.php?id=${key}`
+        const json = await getRoomLiveUrls(key)// JSON.parse(out.replace(/\'/g, "\""))
 
-            const name = room.title
-                ? `【${room.nickname}】${room.room_name}`
-                : '【' + roomInfo['room']['owner_name'] + '】' + roomInfo['room']['room_name']
-            // console.log(name);
-            json.name = name || '未知名称'
-            console.log('房间解析结果:', json);
-            jsonList.push(json)
+        const roomInfo = room.title ? room : await fireFetch(`https://www.douyu.com/betard/${key}`, {}, true)
 
-        } else {
-            console.log(key, '房间解析异常', out);
-        }
+        const name = room.title
+            ? `【${room.nickname}】${room.room_name}`
+            : '【' + roomInfo['room']['owner_name'] + '】' + roomInfo['room']['room_name']
+        // console.log(name);
+        json.name = name || '未知名称'
+        console.log('房间解析结果:', json);
+        jsonList.push(json)
+
 
     }
 

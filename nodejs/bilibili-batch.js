@@ -3,8 +3,6 @@ const {
     genUrlSearch,
 } = require("./utils/utils.js");
 
-//var exec = require('child_process').execSync;
-//const iconv = require('iconv-lite');//解码包，解决中文乱码问题
 const fs = require('fs')
 /*
 # 获取哔哩哔哩直播的真实流媒体地址，默认获取直播间提供的最高画质
@@ -109,7 +107,7 @@ const getYygRooms = async () => {
     const rooms = [];
     while (page < 15) {
         console.log(`获取影音馆-分页 ${page} 的房间列表`);
-        const res = await fireFetch(genUrl(page), {data: {list: []}},true)
+        const res = await fireFetch(genUrl(page), {data: {list: []}}, true)
         const {data, code} = res;
         if (code === 0) {
             const list = data.list || [];
@@ -131,25 +129,20 @@ const getYygRooms = async () => {
 
         const room = rooms[i], key = room.roomid;
         console.log(`正在解析${i + 1}第个房间, ID: ${key}, 共${rooms.length}个`);
-        //  const stdout = exec(`python ../bilibili.py ${key}`)
-        const out = 'url uid'//iconv.decode(stdout, 'cp936');
 
-        if (out.includes('url') && out.includes('uid')) {
-            const json = await getRoomLiveUrl(key)// JSON.parse(out.replace(/\'/g, "\""))
 
-            const user = room.uname && room.title ?
-                {...room} :
-                await fireFetch(`https://api.bilibili.com/x/space/acc/info?mid=${json.uid}`)
+        const json = await getRoomLiveUrl(key)// JSON.parse(out.replace(/\'/g, "\""))
 
-            const uname = room.uname || user.data?.name, rname = room.title || user?.data?.live_room?.title
+        const user = room.uname && room.title ?
+            {...room} :
+            await fireFetch(`https://api.bilibili.com/x/space/acc/info?mid=${json.uid}`)
 
-            json.name = `【${uname}】${rname}` || '未知名称'
-            console.log('房间解析结果:', json);
-            jsonList.push(json)
+        const uname = room.uname || user.data?.name, rname = room.title || user?.data?.live_room?.title
 
-        } else {
-            console.log(key, '房间解析异常', out);
-        }
+        json.name = `【${uname}】${rname}` || '未知名称'
+        console.log('房间解析结果:', json);
+        jsonList.push(json)
+
 
     }
 
