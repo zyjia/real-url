@@ -74,11 +74,15 @@ async function getRoomLiveUrl(rid, currentQn = 10000) {
   const streamUrls = {};
   // flv流无法播放，暂修改成获取hls格式的流
   for (let i = 0; i < streamInfo.length; i++) {
-    const item = streamInfo[i],
-      format_name = item["format"][0]["format_name"];
+    const matchFormat=v=>v === "fmp4" || v=== "ts"
+    const stream = streamInfo[i],
+      formats = stream.format.filter(
+        (item) => matchFormat(item.format_name))
+      format = formats[formats.length - 1] || {};
 
-    if (format_name === "ts") {
-      const codecItem = item["format"][0].codec[0] || {},
+    if (matchFormat(format.format_name || "")) {
+      // console.log( item["format"].pop());
+      const codecItem = format["codec"][0] || {},
         base_url = codecItem["base_url"],
         url_info = codecItem["url_info"] || [];
       for (let j = 0; j < url_info.length; j++) {
@@ -90,11 +94,13 @@ async function getRoomLiveUrl(rid, currentQn = 10000) {
     }
   }
   streamUrls["uid"] = data.uid || "";
-  console.log(JSON.stringify(streamUrls));
+  // console.log(JSON.stringify(streamUrls));
   return streamUrls;
 }
 
-//getRoomLiveUrl(22621344)
+/*  getRoomLiveUrl(22809356).then((res) => {
+  console.log(res);
+});  */
 
 //批量
 const BILI_ROOM_IDS = [22621344, 23150921, 21715386, 23169468, 23285297];
@@ -109,7 +115,7 @@ const getYygRooms = async () => {
   let page = 1,
     hasMore = true;
   const rooms = [];
-  while (page < 50 && hasMore) {
+  while (page < 15 && hasMore) {
     console.log(`获取影音馆-分页 ${page} 的房间列表`);
     const res = await fireFetch(genUrl(page), { data: { list: [] } }, true);
     const { data, code } = res;
@@ -139,20 +145,21 @@ const getYygRooms = async () => {
     console.log(`正在解析${i + 1}第个房间, ID: ${key}, 共${rooms.length}个`);
 
     const json = await getRoomLiveUrl(key); // JSON.parse(out.replace(/\'/g, "\""))
+    if (json.url1) {
+      const user =
+        room.uname && room.title
+          ? { ...room }
+          : await fireFetch(
+              `https://api.bilibili.com/x/space/acc/info?mid=${json.uid}`
+            );
 
-    const user =
-      room.uname && room.title
-        ? { ...room }
-        : await fireFetch(
-            `https://api.bilibili.com/x/space/acc/info?mid=${json.uid}`
-          );
+      const uname = room.uname || user.data?.name,
+        rname = room.title || user?.data?.live_room?.title;
 
-    const uname = room.uname || user.data?.name,
-      rname = room.title || user?.data?.live_room?.title;
-
-    json.name = `【${uname}】${rname}` || "未知名称";
-    console.log("房间解析结果:", json);
-    jsonList.push(json);
+      json.name = `【${uname}】${rname}` || "未知名称";
+      console.log("房间解析结果:", json);
+      jsonList.push(json);
+    }
   }
   fs.writeFileSync(
     path.resolve(__dirname, `../data/bilibili.json`),

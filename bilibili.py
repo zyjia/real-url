@@ -63,6 +63,7 @@ class BiliBili:
         for data in stream_info:
             format_name = data['format'][0]['format_name']
             if format_name == 'ts':
+                print(data['format'][-1])
                 base_url = data['format'][-1]['codec'][0]['base_url']
                 url_info = data['format'][-1]['codec'][0]['url_info']
                 for i, info in enumerate(url_info):
