@@ -5,7 +5,7 @@
 - 批量获取直播URL，添加房间名称、主播名称
 - 生成m3u文件
 - 修改部分`python`脚本
-- ~~~在`Node.js`调用`python`脚本~~~
+- ~~在`Node.js`调用`python`脚本~~
 - `douyu、bilibili、huya`使用`js`解析
 - 每天自动构建，输出到`output`分支
 
