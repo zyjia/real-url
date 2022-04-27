@@ -68,15 +68,10 @@ jobs:
         working-directory: ./nodejs
         run: node all-m3u.js
 
-      - name: Pushes to My Repository
-        uses: tech-thinker/push-to-repo@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.GIT_PAT_TOKEN }}
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
         with:
-          user-name: "github-actions[bot]"
-          user-email: github-actions[bot]@users.noreply.github.com
-          source-directory: "./"
-          destination-github-username: "moxun33"
-          destination-repository-name: "real-url"
-          target-branch: output
+          name: m3u data
+          path: |
+            data
 
