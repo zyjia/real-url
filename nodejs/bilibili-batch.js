@@ -12,28 +12,28 @@ const fs = require("fs");
 //有些地址无法在PotPlayer播放，建议换个播放器试试
 
 /**
- * 房间的真实id
+ * 1、获取房间的真实id
  */
 async function getRoomRealId(rid) {
   const url = `https://api.live.bilibili.com/room/v1/Room/room_init?id=${rid}`;
   const res = await fireFetch(url, {}, true);
   if (res.code !== 0) {
     console.log(rid, res.msg);
-    return 0;
+    return rid;
   }
 
   const data = res.data || {},
     { live_status, room_id } = data;
   if (live_status !== 1) {
     console.log(rid, "未开播");
-    return 0;
+    return rid;
   }
 
   return room_id;
 }
 
 /**
- * 房间的直播信息 url列表
+ * 2、房间的直播信息 url列表
  */
 async function getRoomLiveUrl(rid, currentQn = 10000) {
   const realId = await getRoomRealId(rid);
@@ -65,20 +65,22 @@ async function getRoomLiveUrl(rid, currentQn = 10000) {
   for (let i = 0; i < streamInfo.length; i++) {
     const item = streamInfo[i],
       accept_qn = item["format"][0]["codec"][0]["accept_qn"] || [];
+    /*  for (const qn in accept_qn) {
+      qn_max = qn > qn_max ? qn : qn_max;
+    } */
     qn_max = accept_qn.sort((a, b) => a - b).pop();
   }
   if (qn_max !== currentQn) {
-    data = await getStreamData(currentQn);
+    data = await getStreamData(qn_max);
     streamInfo = data?.playurl_info?.playurl?.stream || [];
   }
   const streamUrls = {};
   // flv流无法播放，暂修改成获取hls格式的流
   for (let i = 0; i < streamInfo.length; i++) {
-    const matchFormat=v=>v === "fmp4" || v=== "ts"
+    const matchFormat = (v) => v === "fmp4" || v === "ts";
     const stream = streamInfo[i],
-      formats = stream.format.filter(
-        (item) => matchFormat(item.format_name))
-      format = formats[formats.length - 1] || {};
+      formats = stream.format.filter((item) => matchFormat(item.format_name));
+    format = formats[formats.length - 1] || {};
 
     if (matchFormat(format.format_name || "")) {
       // console.log( item["format"].pop());
@@ -97,10 +99,24 @@ async function getRoomLiveUrl(rid, currentQn = 10000) {
   // console.log(JSON.stringify(streamUrls));
   return streamUrls;
 }
+//根据room id获取房间信息
+async function getRoomInfo(rid) {
+  const url = `https://api.live.bilibili.com/room/v1/Room/get_info?room_id=${rid}`;
+  const res = await fireFetch(url);
 
-/*  getRoomLiveUrl(22809356).then((res) => {
+  return res.code === 0 ? res.data || {} : {};
+}
+//根据user id获取信息
+async function getUserInfo(uid) {
+  const res = await fireFetch(
+    `https://api.bilibili.com/x/space/acc/info?mid=${uid}`
+  );
+  return res.code === 0 ? res.data || {} : {};
+}
+//测试单个live url，
+/* getRoomLiveUrl(10375360).then((res) => {
   console.log(res);
-});  */
+}); */
 
 //批量
 const BILI_ROOM_IDS = [22621344, 23150921, 21715386, 23169468, 23285297];
@@ -117,7 +133,7 @@ const getYygRooms = async () => {
   const rooms = [];
   while (page < 15 && hasMore) {
     console.log(`获取影音馆-分页 ${page} 的房间列表`);
-    const res = await fireFetch(genUrl(page), { data: { list: [] } }, true);
+    const res = await fireFetch(genUrl(page), {}, true);
     const { data, code } = res;
     if (code === 0) {
       const list = data.list || [];
@@ -147,15 +163,11 @@ const getYygRooms = async () => {
     const json = await getRoomLiveUrl(key); // JSON.parse(out.replace(/\'/g, "\""))
     if (json.url1) {
       const user =
-        room.uname && room.title
-          ? { ...room }
-          : await fireFetch(
-              `https://api.bilibili.com/x/space/acc/info?mid=${json.uid}`
-            );
+        room.uname && room.title ? { ...room } : await getUserInfo(json.uid);
 
-      const uname = room.uname || user.data?.name,
-        rname = room.title || user?.data?.live_room?.title;
-
+      const uname = room.uname || user.name,
+        rname = room.title || user?.live_room?.title;
+      json.room_id=key;
       json.name = `【${uname}】${rname}` || "未知名称";
       console.log("房间解析结果:", json);
       jsonList.push(json);
