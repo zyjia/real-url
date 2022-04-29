@@ -91,12 +91,17 @@ async function getRoomLiveUrl(rid, currentQn = 10000) {
         const info = url_info[j],
           host = info["host"],
           extra = info["extra"],
-          extraObj = parseUrlSearch('?'+extra.substring(1));
-          const signs=genUrlSearch({
-          sign: extraObj.sign,
-          cdn: extraObj.cdn,
-        },true)
-        streamUrls[`url${j + 1}`] = `${host}${base_url}${extra}`;
+          extraObj = parseUrlSearch("?" + extra.substring(1));
+        const signs = genUrlSearch(
+          {
+            sign: extraObj.sign,
+            cdn: extraObj.cdn,
+          },
+          true
+        );
+        streamUrls[`url${j + 1}`] = host.includes("https://cn-")
+          ? `${host}${base_url.split("?").shift()}`
+          : `${host}${base_url}&${signs}`;
       }
     }
   }
@@ -119,7 +124,7 @@ async function getUserInfo(uid) {
   return res.code === 0 ? res.data || {} : {};
 }
 //测试单个live url，
-/* getRoomLiveUrl(10375360).then((res) => {
+/* getRoomLiveUrl(24376812).then((res) => {
   console.log(res);
 }); */
 
