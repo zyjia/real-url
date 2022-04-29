@@ -1,4 +1,4 @@
-const { fireFetch, genUrlSearch } = require("./utils/utils.js");
+const { fireFetch, genUrlSearch, parseUrlSearch } = require("./utils/utils.js");
 const path = require("path");
 const fs = require("fs");
 /*
@@ -90,7 +90,12 @@ async function getRoomLiveUrl(rid, currentQn = 10000) {
       for (let j = 0; j < url_info.length; j++) {
         const info = url_info[j],
           host = info["host"],
-          extra = info["extra"];
+          extra = info["extra"],
+          extraObj = parseUrlSearch('?'+extra.substring(1));
+          const signs=genUrlSearch({
+          sign: extraObj.sign,
+          cdn: extraObj.cdn,
+        },true)
         streamUrls[`url${j + 1}`] = `${host}${base_url}${extra}`;
       }
     }
@@ -131,7 +136,7 @@ const getYygRooms = async () => {
   let page = 1,
     hasMore = true;
   const rooms = [];
-  while (page < 15 && hasMore) {
+  while (page < 30 && hasMore) {
     console.log(`获取影音馆-分页 ${page} 的房间列表`);
     const res = await fireFetch(genUrl(page), {}, true);
     const { data, code } = res;
@@ -153,6 +158,7 @@ const getYygRooms = async () => {
 };
 
 (async () => {
+  //return;
   const jsonList = [],
     rooms = await getYygRooms();
   for (let i = 0; i < rooms.length; i++) {
@@ -167,7 +173,7 @@ const getYygRooms = async () => {
 
       const uname = room.uname || user.name,
         rname = room.title || user?.live_room?.title;
-      json.room_id=key;
+      json.room_id = key;
       json.name = `【${uname}】${rname}` || "未知名称";
       console.log("房间解析结果:", json);
       jsonList.push(json);

@@ -14,6 +14,8 @@ const path = require("path");
  * 解析斗鱼 url
  * */
 
+const DOMAINS=['hdltctwk.douyucdn2.cn',
+    'tc-tct1.douyucdn.cn','vplay1a.douyucdn.cn']
 //获取房间真实id,等初始信息
 // 房间号通常为1~8位纯数字，浏览器地址栏中看到的房间号不一定是真实rid
 const getRoomRealId = async (rid) => {
@@ -132,12 +134,13 @@ const getRoomLiveUrls = async (rid) => {
     }
     let real_url = {};
     if (prevInfo.key) {
+        const domain=DOMAINS[0]
         real_url[
             "flv"
-            ] = `http://vplay1a.douyucdn.cn/live/${prevInfo.key}.flv?uuid=`;
+            ] = `http://${domain}/live/${prevInfo.key}.flv?uuid=`;
         real_url[
             "x-p2p"
-            ] = `http://vplay1a.douyucdn.cn/live/${prevInfo.key}.xs?uuid=`;
+            ] = `http://${domain}/live/${prevInfo.key}.xs?uuid=`;
     }
     return real_url;
 };
