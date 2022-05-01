@@ -56,7 +56,7 @@ const getHuyaRealUrl = async (roomId, rawUrl = "", type = "flv") => {
       ((Date.now() % 1e10) * 1e3 + ((1e3 * Math.random()) | 0)) % 4294967295
     ),
     uid = getRandomInt(1460000000000, 1650000000000),
-    seqid = parseInt(uid) + Date.now() * 1e4;
+    seqid = parseInt(uid) + Date.now() ;
   const s = encrypt(`${seqid}|${query.ctype}|${query.t}`),
     pathname = liveUrl.split("?").shift().split("/").pop(),
     _sStreamName = pathname.replace("." + type, ""),
@@ -132,10 +132,10 @@ const getYqkRooms = async () => {
 };
 
 (async () => {
-  /*  getHuyaLiveInfo("11352944").then((url) => {
+   /* getHuyaLiveInfo("11352944").then((url) => {
        console.log(url);
-     }); */
-
+     });  */
+ 
   const jsonList = [],
     rooms = [...(await getYqkRooms())];
 
