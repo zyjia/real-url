@@ -193,7 +193,7 @@ const getYygRooms = async () => {
   const m3u_list = ["#EXTM3U"];
   for (const i in jsonList) {
     const obj = jsonList[i],
-      url = obj["url1"];
+      url = obj["url2"] || obj["url1"];
     if (url) {
       m3u_list.push(`#EXTINF:-1 group-title="B站", ${obj.name}`, url);
     }
