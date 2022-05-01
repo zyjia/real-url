@@ -143,9 +143,9 @@ const getRoomLiveUrls = async (rid) => {
   return real_url;
 };
 
-getRoomLiveUrls(747764).then((res) => {
+/* getRoomLiveUrls(747764).then((res) => {
   console.log(res);
-});
+}); */
 //批量解析房间
 
 const DOUYU_ROOM_IDS = [
@@ -183,7 +183,7 @@ const getLiveRooms = async () => {
 };
 
 (async () => {
-  return;
+  
   const jsonList = [],
     rooms = await getLiveRooms();
   for (let i = 0; i < rooms.length; i++) {
