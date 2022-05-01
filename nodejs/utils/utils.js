@@ -14,9 +14,9 @@ const COMM_CONF = {
 const fireFetch = async (url, opts = {}, isJson = false) => {
     try {
 
-        const heads = opts.headers || {};
+        const heads = opts.headers||opts.Headers||  {};
         const res = await fetch(url, {
-         //   agent: HttpsProxyAgent(COMM_CONF.PROXY_URL),
+            agent: HttpsProxyAgent(COMM_CONF.PROXY_URL),
             ...opts, mode: "same-origin",
             credentials: "same-origin",
             headers: {
