@@ -48,9 +48,7 @@ jobs:
 
       - name: install nodejs dependences
         working-directory: ./nodejs
-        run: |
-          npm i yarn -g
-          yarn
+        run: yarn
 
       - name: update bilibili
         working-directory: ./nodejs
