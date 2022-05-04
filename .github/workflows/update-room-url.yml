@@ -74,9 +74,21 @@ jobs:
           path: |
             data
 
+      - name: Pushes to My Repository
+        uses: tech-thinker/push-to-repo@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.GIT_PAT_TOKEN }}
+        with:
+          user-name: "github-actions[bot]"
+          user-email: github-actions[bot]@users.noreply.github.com
+          source-directory: "./"
+          destination-github-username: "moxun33"
+          destination-repository-name: "real-url"
+          target-branch: output
+
       - name: pubish release
         uses: softprops/action-gh-release@v1
-        #if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: "data/**"
         env:
