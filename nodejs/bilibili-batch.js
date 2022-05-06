@@ -124,9 +124,9 @@ async function getUserInfo(uid) {
   return res.code === 0 ? res.data || {} : {};
 }
 //测试单个live url，
- getRoomLiveUrl(10375360).then((res) => {
+/* getRoomLiveUrl(10375360).then((res) => {
   console.log(res);
-});
+});*/
 
 //批量
 const BILI_ROOM_IDS = [22621344, 23150921, 21715386, 23169468, 23285297];
@@ -163,7 +163,7 @@ const getYygRooms = async () => {
 };
 
 (async () => {
-   return;
+
   const jsonList = [],
     rooms = await getYygRooms();
   for (let i = 0; i < rooms.length; i++) {
