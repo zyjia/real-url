@@ -101,7 +101,7 @@ async function getRoomLiveUrl(rid, currentQn = 10000) {
         );
         streamUrls[`url${j + 1}`] = host.includes("https://cn-")
           ? `${host}${base_url.split("?").shift()}`
-          : `${host}${base_url}&${signs}`;
+          : `${host}${base_url}?${genUrlSearch(extraObj)}`;
       }
     }
   }
@@ -124,9 +124,9 @@ async function getUserInfo(uid) {
   return res.code === 0 ? res.data || {} : {};
 }
 //测试单个live url，
-/* getRoomLiveUrl(24376812).then((res) => {
+ getRoomLiveUrl(10375360).then((res) => {
   console.log(res);
-}); */
+});
 
 //批量
 const BILI_ROOM_IDS = [22621344, 23150921, 21715386, 23169468, 23285297];
@@ -163,7 +163,7 @@ const getYygRooms = async () => {
 };
 
 (async () => {
-  //return;
+   return;
   const jsonList = [],
     rooms = await getYygRooms();
   for (let i = 0; i < rooms.length; i++) {
