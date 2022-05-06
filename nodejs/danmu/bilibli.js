@@ -184,6 +184,7 @@ function initBiliWs(roomId, opts={
     ws.onmessage = async function (msgEvent) {
         try {
             const packet = await decode(msgEvent.data);
+
             opts.onMessage&&opts.onMessage(packet)
             switch (packet.op) {
                 case 8:
@@ -197,6 +198,7 @@ function initBiliWs(roomId, opts={
                     packet.body.forEach((body) => {
                         switch (body.cmd) {
                             case 'DANMU_MSG':
+
                                // console.log(`${body.info[2][1]}: ${body.info[1]}`, '收到弹幕');
                                 opts.onDanmaku&&opts.onDanmaku(body.info)
                                 break;
@@ -224,8 +226,8 @@ function initBiliWs(roomId, opts={
 }
 
 module.exports={initBiliWs}
-initBiliWs(10375360,{onDanmaku:(info)=>{
+/*initBiliWs(10375360,{onDanmaku:(info)=>{
         console.log("uid: " + info[2][0]
             + "; 用户: " + info[2][1]
             + " ; 内容: " + info[1]);
-    }})
+    }})*/

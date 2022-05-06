@@ -195,7 +195,7 @@ const getYygRooms = async () => {
     const obj = jsonList[i],
       url = obj["url2"] || obj["url1"];
     if (url) {
-      m3u_list.push(`#EXTINF:-1 group-title="B站", ${obj.name}`, url);
+      m3u_list.push(`#EXTINF:-1 group-title="B站" tvg-id="${obj.room_id}", ${obj.name}`, url);
     }
   }
   fs.writeFileSync(
