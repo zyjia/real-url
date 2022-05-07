@@ -134,9 +134,10 @@ const getRoomLiveUrls = async (rid) => {
       prevInfo.key = await getUrlKey(prevInfo.initInfo);
     }
   }
-  let real_url = {};
+  let real_url = {room_id:rid};
   if (prevInfo.key) {
     const domain = DOMAINS[0];
+
     real_url["flv"] = `http://${domain}/live/${prevInfo.key}.flv?uuid=`;
     real_url["x-p2p"] = `http://${domain}/live/${prevInfo.key}.xs?uuid=`;
   }
@@ -183,7 +184,7 @@ const getLiveRooms = async () => {
 };
 
 (async () => {
-  
+
   const jsonList = [],
     rooms = await getLiveRooms();
   for (let i = 0; i < rooms.length; i++) {
@@ -221,7 +222,7 @@ const getLiveRooms = async () => {
   for (const i in jsonList) {
     const obj = jsonList[i],
       url = obj["flv"] || obj["x-p2p"];
-    m3u_list.push(`#EXTINF:-1 group-title="斗鱼", ${obj.name}`, url);
+    m3u_list.push(`#EXTINF:-1 group-title="斗鱼" tvg-id="${obj.room_id}", ${obj.name}`, url);
   }
 
   fs.writeFileSync(
