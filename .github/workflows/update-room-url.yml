@@ -49,7 +49,6 @@ jobs:
       - name: install nodejs dependences
         working-directory: ./nodejs
         run: |
-          npx rimraf "yarn.lock"
           yarn
 
       - name: update bilibili
