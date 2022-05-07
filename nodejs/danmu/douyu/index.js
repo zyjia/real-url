@@ -35,7 +35,7 @@ room.on('loginres', function(res) {
     console.log('[loginres]', '登录成功')
 })
 room.on('uenter', function(res) {
-    console.log('[uenter]', `${res.nn}进入房间`)
+   // console.log('[uenter]', `${res.nn}进入房间`)
 })
 
 //开始监听

@@ -114,7 +114,7 @@ const getHuyaLiveInfo = async (roomId) => {
             roomLiveInfo.sRoomName || roomLiveInfo.roomName
         }`;
     // console.log(info);
-    return {url: await getHuyaRealUrl(roomId, rawUrl), name};
+    return {url: await getHuyaRealUrl(roomId, rawUrl), name,room_id:roomId};
 };
 
 //指定子分区
@@ -179,7 +179,7 @@ const getYqkRooms = async () => {
         const obj = jsonList[i],
             url = obj["url1"] || obj["url2"] || obj["url"];
         if (url) {
-            m3u_list.push(`#EXTINF:-1 group-title="虎牙", ${obj.name}`, url);
+            m3u_list.push(`#EXTINF:-1 group-title="虎牙" tvg-id="${obj.room_id}", ${obj.name}`, url);
         }
     }
 
