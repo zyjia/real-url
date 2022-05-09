@@ -130,6 +130,7 @@ node_modules
 .idea
 easyplayer
 vercel-deploy
+vercel-deploy-gh
 .vercel
  data/
  local
