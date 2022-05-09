@@ -169,7 +169,7 @@ const getLiveRooms = async () => {
     rooms = [];
   for (const cateId of cates) {
     console.log(`获取一起看分类 ${cateId} 的房间列表`);
-    const url = `https://capi.douyucdn.cn/api/v1/getThreeList?cate_id=${cateId}&offset=0&limit=50&client_sys=android`,
+    const url = `https://capi.douyucdn.cn/api/v1/getThreeList?cate_id=${cateId}&offset=0&limit=100&client_sys=android`,
       res = await fireFetch(url, {}, true);
     if (res.error === 0 && Array.isArray(res.data)) {
       const list = res.data.map(({ nickname, room_id, room_name }) => ({
