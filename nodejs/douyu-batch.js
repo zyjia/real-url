@@ -138,8 +138,8 @@ const getRoomLiveUrls = async (rid) => {
   if (prevInfo.key) {
     const domain = DOMAINS[0];
 
-    real_url["flv"] = `http://${domain}/live/${prevInfo.key}.flv?uuid=`;
-    real_url["x-p2p"] = `http://${domain}/live/${prevInfo.key}.xs?uuid=`;
+    real_url["flv"] = `https://${domain}/live/${prevInfo.key}.flv?uuid=`;
+    real_url["x-p2p"] = `https://${domain}/live/${prevInfo.key}.xs?uuid=`;
   }
   return real_url;
 };

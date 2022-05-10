@@ -100,7 +100,7 @@ const getHuyaRealUrl = async (roomId, rawUrl = "", type = "flv") => {
             radio: 2000,
         };
     // console.log(query);
-    const hostname = `http://${host}`;
+    const hostname = `https://${host}`;
     return `${hostname}/src/${_sStreamName}.${type}${genUrlSearch(searchObj)}`;
 };
 
