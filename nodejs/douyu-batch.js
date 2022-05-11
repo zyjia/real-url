@@ -15,6 +15,7 @@ const path = require("path");
  * */
 const DOMAINS = [
   "hdltctwk.douyucdn2.cn",
+  "akm-tct.douyucdn.cn",
   "tc-tct1.douyucdn.cn",
   "vplay1a.douyucdn.cn",
 ];
