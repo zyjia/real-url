@@ -139,8 +139,9 @@ const getRoomLiveUrls = async (rid) => {
   if (prevInfo.key) {
     const domain = DOMAINS[0];
 
-    real_url["flv"] = `https://${domain}/live/${prevInfo.key}.flv?uuid=`;
-    real_url["x-p2p"] = `https://${domain}/live/${prevInfo.key}.xs?uuid=`;
+    real_url["m3u8"] = `https://${domain}/live/${prevInfo.key}.m3u8`;
+    real_url["flv"] = `https://${domain}/live/${prevInfo.key}.flv`;
+    real_url["x-p2p"] = `https://${domain}/live/${prevInfo.key}.xs`;
   }
   return real_url;
 };
@@ -222,7 +223,7 @@ const getLiveRooms = async () => {
   const m3u_list = ["#EXTM3U"];
   for (const i in jsonList) {
     const obj = jsonList[i],
-      url = obj["flv"] || obj["x-p2p"];
+      url = obj["m3u8"] || obj["flv"] || obj["x-p2p"];
     m3u_list.push(`#EXTINF:-1 group-title="斗鱼" tvg-id="${obj.room_id}", ${obj.name}`, url);
   }
 
