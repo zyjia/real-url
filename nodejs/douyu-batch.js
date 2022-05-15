@@ -135,7 +135,7 @@ const getRoomLiveUrls = async (rid) => {
       prevInfo.key = await getUrlKey(prevInfo.initInfo);
     }
   }
-  let real_url = {room_id:rid};
+  let real_url = { room_id: rid };
   if (prevInfo.key) {
     const domain = DOMAINS[0];
 
@@ -186,7 +186,6 @@ const getLiveRooms = async () => {
 };
 
 (async () => {
-
   const jsonList = [],
     rooms = await getLiveRooms();
   for (let i = 0; i < rooms.length; i++) {
@@ -201,7 +200,9 @@ const getLiveRooms = async () => {
     const roomInfo = room.title
       ? room
       : await fireFetch(`https://www.douyu.com/betard/${key}`, {}, true);
-
+    if (!(roomInfo && roomInfo.room)) {
+      continue;
+    }
     const name = room.title
       ? `【${room.nickname}】${room.room_name}`
       : "【" +
@@ -224,7 +225,10 @@ const getLiveRooms = async () => {
   for (const i in jsonList) {
     const obj = jsonList[i],
       url = obj["m3u8"] || obj["flv"] || obj["x-p2p"];
-    m3u_list.push(`#EXTINF:-1 group-title="斗鱼" tvg-id="${obj.room_id}", ${obj.name}`, url);
+    m3u_list.push(
+      `#EXTINF:-1 group-title="斗鱼" tvg-id="${obj.room_id}", ${obj.name}`,
+      url
+    );
   }
 
   fs.writeFileSync(
