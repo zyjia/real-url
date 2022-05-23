@@ -113,7 +113,7 @@ const getHuyaLiveInfo = async (roomId) => {
         name = `【${roomLiveInfo.sNick || roomLiveInfo.nick}】${
             roomLiveInfo.sRoomName || roomLiveInfo.roomName
         }`;
-    // console.log(info);
+   //console.log(info);
     return {url: await getHuyaRealUrl(roomId, rawUrl), name,room_id:roomId};
 };
 
@@ -149,10 +149,10 @@ const getYqkRooms = async () => {
 };
 
 (async () => {
-    /* getHuyaLiveInfo("11352944").then((url) => {
+ getHuyaLiveInfo("11352944").then((url) => {
         console.log(url);
-      });  */
-
+      });  
+return
     const jsonList = [],
         rooms = [...(await getYqkRooms())];
 
