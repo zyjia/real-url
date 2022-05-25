@@ -224,7 +224,7 @@ const getLiveRooms = async () => {
   const m3u_list = ["#EXTM3U"];
   for (const i in jsonList) {
     const obj = jsonList[i],
-      url = obj["flv"] || obj["m3u8"] || obj["x-p2p"];
+      url = obj["m3u8"] || obj["flv"] || obj["x-p2p"];
     m3u_list.push(
       `#EXTINF:-1 group-title="斗鱼" tvg-id="${obj.room_id}", ${obj.name}`,
       url
