@@ -149,10 +149,10 @@ const getYqkRooms = async () => {
 };
 
 (async () => {
- getHuyaLiveInfo("11352944").then((url) => {
+ /* getHuyaLiveInfo("11352944").then((url) => {
         console.log(url);
-      });  
-return
+      });  */ 
+
     const jsonList = [],
         rooms = [...(await getYqkRooms())];
 
