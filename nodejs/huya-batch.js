@@ -128,56 +128,69 @@ const getHuyaLiveInfo = async (roomId) => {
 };
 
 //一起看的房间
-const getYqkRooms = async () => {
+const getYqkRooms = async (all = false) => {
   //const tmpIds = [4201];
   const tmpIds = [4201, 4183, 2067, 4061, 2079];
 
   const genUrl = (t) =>
-   //`https://www.huya.com/cache.php?m=LiveList&do=getLiveListByPage&gameId=2135&tagAll=0&callback=getLiveListJsonpCallback&page=${t}`;
-  `https://live.cdn.huya.com/livelist/game/tagLivelist?gameId=2135&tmpId=${t}&callback=getLiveListJsonpCallback&page=1`;
-   const rooms = [];
-  /* let page = 1,
-    totalPage = 1;
-  while (page <= totalPage) {
-    console.log(`获取【一起看】第${page}页 的房间列表`);
-    let resTxt = await fireFetch(genUrl(page), { data: { datas: [] } }, false);
-    resTxt = resTxt
-      .replace("getLiveListJsonpCallback(", "")
-      .replace("}})", "}}");
-    const res = JSON.parse(resTxt);
-    const { data, status } = res;
-    if (status === 200) {
-      totalPage = data.totalPage;
-      page++;
-      const list = data.datas || [];
-      const rs = list.map(({ profileRoom, introduction, nick, uid }) => ({
-        roomid: profileRoom,
-        introduction,
-        nick,
-        uid,
-      }));
-      rooms.push(...rs);
+    `https://live.cdn.huya.com/livelist/game/tagLivelist?gameId=2135&tmpId=${t}&callback=getLiveListJsonpCallback&page=1`;
+
+  const genAllUrl = (t) =>
+    `https://www.huya.com/cache.php?m=LiveList&do=getLiveListByPage&gameId=2135&tagAll=0&callback=getLiveListJsonpCallback&page=${t}`;
+  const rooms = [];
+  if (all) {
+    let page = 1,
+      totalPage = 1;
+    while (page <= totalPage) {
+      console.log(`获取【一起看】第${page}页 的房间列表`);
+      let resTxt = await fireFetch(
+        genAllUrl(page),
+        { data: { datas: [] } },
+        false
+      );
+      resTxt = resTxt
+        .replace("getLiveListJsonpCallback(", "")
+        .replace("}})", "}}");
+      const res = JSON.parse(resTxt);
+      const { data, status } = res;
+      if (status === 200) {
+        totalPage = data.totalPage;
+        page++;
+        const list = data.datas || [];
+        const rs = list.map(({ profileRoom, introduction, nick, uid }) => ({
+          roomid: profileRoom,
+          introduction,
+          nick,
+          uid,
+        }));
+        rooms.push(...rs);
+      }
     }
-  }  */
-     for (const tmpId of tmpIds) {
-        console.log(`获取【一起看】 ${tmpId} 子分区  的房间列表`);
-        let resTxt = await fireFetch(genUrl(tmpId), {data: {datas: []}}, false);
-        resTxt = resTxt
-            .replace("getLiveListJsonpCallback(", "")
-            .replace("}})", "}}");
-        const res = JSON.parse(resTxt);
-        const {data, status} = res;
-        if (status === 200) {
-            const list = data.datas || [];
-            const rs = list.map(({profileRoom, introduction, nick, uid}) => ({
-                roomid: profileRoom,
-                introduction,
-                nick,
-                uid,
-            }));
-            rooms.push(...rs);
-        }
-    } 
+  } else {
+    for (const tmpId of tmpIds) {
+      console.log(`获取【一起看】 ${tmpId} 子分区  的房间列表`);
+      let resTxt = await fireFetch(
+        genUrl(tmpId),
+        { data: { datas: [] } },
+        false
+      );
+      resTxt = resTxt
+        .replace("getLiveListJsonpCallback(", "")
+        .replace("}})", "}}");
+      const res = JSON.parse(resTxt);
+      const { data, status } = res;
+      if (status === 200) {
+        const list = data.datas || [];
+        const rs = list.map(({ profileRoom, introduction, nick, uid }) => ({
+          roomid: profileRoom,
+          introduction,
+          nick,
+          uid,
+        }));
+        rooms.push(...rs);
+      }
+    }
+  }
 
   return rooms;
 };
