@@ -1,6 +1,6 @@
 const {createHash} = require("crypto");
 const fetch = require("node-fetch");
-const HttpsProxyAgent = require('https-proxy-agent');
+//const HttpsProxyAgent = require('https-proxy-agent');
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const COMM_CONF = {

@@ -46,10 +46,13 @@ jobs:
         run: |
           pip install -r requirements.txt
 
+      - name: install pnpm
+        run: npm i pnpm -g
+
       - name: install nodejs dependences
         working-directory: ./nodejs
         run: |
-          yarn
+          pnpm i
 
       - name: update bilibili
         working-directory: ./nodejs
